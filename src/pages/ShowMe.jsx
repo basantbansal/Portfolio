@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, lazy, Suspense } from 'react'
 import gsap from 'gsap'
 import ParticlePortrait from '../components/ParticlePortrait'
 import { FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa'
@@ -6,11 +6,11 @@ import { FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa'
 import { T } from './Theme'
 import { Text, Button } from './ui'
 
-import AboutSection from './AboutSection'
-import ProjectsSection from './ProjectsSection'
-import SkillsSection from './SkillsSection'
-import TimelineSection from './TimelineSection'
-import ContactSection from './ContactSection'
+const AboutSection = lazy(() => import('./AboutSection'))
+const ProjectsSection = lazy(() => import('./ProjectsSection'))
+const SkillsSection = lazy(() => import('./SkillsSection'))
+const TimelineSection = lazy(() => import('./TimelineSection'))
+const ContactSection = lazy(() => import('./ContactSection'))
 
 import subjectImage from '../assets/izuku-midoriya-10667x6000-19490-Photoroom.png'
 import backgroundImage from '../assets/izuku-midoriya-10667x6000-19490.jpg'
@@ -124,9 +124,9 @@ function HeroSection({ isMobile }) {
               height: '100%',
               objectFit: 'cover',
               objectPosition: 'center 35%',
-              filter: 'blur(10px) brightness(1.05) saturate(1.2)',
+              filter: 'blur(6px) brightness(1.03) saturate(1.08)',
               opacity: 0.95,
-              transform: 'scale(1.07)',
+              transform: 'scale(1.03)',
             }}
           />
         </div>
@@ -265,7 +265,6 @@ function HeroSection({ isMobile }) {
       </div>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
         @keyframes grainShift {
           0%   { transform: translate(0,0); }
@@ -435,6 +434,7 @@ export default function ShowMe() {
 
   return (
     <div style={{ background: T.bgDeep }}>
+      <Suspense fallback={<div style={{ minHeight: 200 }} />}>
       <HeroSection isMobile={isMobile} />
       <PortraitSection />
       <AboutSection />
@@ -442,6 +442,7 @@ export default function ShowMe() {
       <SkillsSection />
       <TimelineSection />
       <ContactSection />
+      </Suspense>
     </div>
   )
 }
