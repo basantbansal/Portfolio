@@ -209,19 +209,20 @@ function HeroSection({ isMobile }) {
             justifyContent: 'center',
           }}
         >
-          <img
-            src={subjectImage}
-            alt={HERO_TEXT}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              objectPosition: 'center bottom',
-              transform: isMobile ? 'scale(1.5) translateY(10px)' : 'scale(1.9) translateY(-90px)',
-              imageRendering: 'crisp-edges',
-              filter: 'drop-shadow(0 14px 40px rgba(0,0,0,0.22))',
-            }}
-          />
+            <img
+              src={subjectImage}
+              alt={HERO_TEXT}
+              fetchPriority="high"
+              decoding="async"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                objectPosition: 'center bottom',
+                transform: isMobile ? 'scale(1.5) translateY(10px)' : 'scale(1.9) translateY(-90px)',
+                filter: 'drop-shadow(0 14px 40px rgba(0,0,0,0.22))',
+              }}
+            />
         </div>
       </div>
 
