@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import ParticlePortrait from '../components/ParticlePortrait'
 import { FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa'
 
-import { T } from './theme'
+import { T } from './Theme'
 import { Text, Button } from './ui'
 
 import AboutSection from './AboutSection'

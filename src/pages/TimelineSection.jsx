@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { T } from './theme'
+import { T } from './Theme'
 import { Section, Text, Card } from './ui'
 
 const EVENTS = [

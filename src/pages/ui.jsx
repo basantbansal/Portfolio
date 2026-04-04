@@ -1,4 +1,4 @@
-import { T } from './theme'
+import { T } from './Theme'
 
 export function cx(...styles) {
   return Object.assign({}, ...styles.filter(Boolean))

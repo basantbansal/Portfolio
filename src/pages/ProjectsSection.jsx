@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { T } from './theme'
+import { T } from './Theme'
 
 const STATS = [
   { value: '2024', label: 'Started College' },

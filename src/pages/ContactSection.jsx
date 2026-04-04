@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa'
 import { Section, Text, Button } from './ui'
-import { T } from './theme'
+import { T } from './Theme'
 
 const SOCIALS = [
   { label: 'GitHub', href: 'https://github.com/basantbansal', Icon: FaGithub },
