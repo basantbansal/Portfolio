@@ -383,11 +383,12 @@ function PortraitSection() {
 
       <div style={{ display: 'flex', gap: 24 }}>
         {[
-          { href: 'https://github.com/basantbansal', Icon: FaGithub, hover: T.textPrimary },
+          { href: 'https://github.com/basantbansal' , Icon: FaGithub, hover: T.textPrimary },
           { href: 'https://www.linkedin.com/in/basant-bansal-22066036b/', Icon: FaLinkedin, hover: '#60a5fa' },
           { href: 'https://www.instagram.com/basant__bansal/', Icon: FaInstagram, hover: T.accentRose },
         ].map(({ href, Icon, hover }) => (
           <a
+            aria-label="My Profile"
             key={href}
             href={href}
             target="_blank"
