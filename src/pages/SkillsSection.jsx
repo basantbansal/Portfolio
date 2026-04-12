@@ -57,7 +57,7 @@ function SkillBar({ name, level, delay }) {
         border: `1px solid ${T.border}`,
         borderRadius: 999,
         fontFamily: T.mono,
-        fontSize: 11,
+        fontSize: 15,
         letterSpacing: '0.08em',
         color: T.textSecondary,
         background: 'rgba(255,255,255,0.02)',
@@ -145,10 +145,6 @@ export default function SkillsSection() {
           <SkillGroup key={g.label} group={g} groupIndex={i} />
         ))}
       </div>
-
-      <Text variant="mono" style={{ textAlign: 'center', marginTop: 36, opacity: 0.7 }}>
-        Self-assessed — update SKILL_GROUPS in SkillsSection.jsx
-      </Text>
     </Section>
   )
 }
