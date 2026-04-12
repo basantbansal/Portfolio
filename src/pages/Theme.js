@@ -27,9 +27,9 @@ export const T = {
   fsHero: 'clamp(5rem, 16vw, 14rem)',
   fsTitle: 'clamp(2.5rem, 7vw, 5rem)',
   fsSubtitle: 'clamp(1.15rem, 3vw, 1.7rem)',
-  fsBody: '15.5px',
-  fsSmall: '13px',
-  fsTiny: '10px',
+  fsBody: '20.5px',
+  fsSmall: '18px',
+  fsTiny: '15px',
 
   lhHero: 0.9,
   lhTitle: 1,
