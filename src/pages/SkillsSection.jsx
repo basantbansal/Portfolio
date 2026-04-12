@@ -132,9 +132,11 @@ function SkillGroup({ group, groupIndex }) {
 export default function SkillsSection() {
   return (
     <Section>
-      <Text variant="sectionLabel" style={{ marginBottom: 20 }}>
-        03 / Skills
-      </Text>
+      <div id="skills" style={{ scrollMarginTop: 112 }}>
+        <Text variant="sectionLabel" style={{ marginBottom: 20 }}>
+          03 / Skills
+        </Text>
+      </div>
 
       <Text as="h2" variant="title" style={{ marginBottom: 60 }}>
         What I Work With

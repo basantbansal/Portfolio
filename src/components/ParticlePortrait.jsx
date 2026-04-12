@@ -6,19 +6,23 @@ const IDLE_FRAME_LIMIT = 18
 const MAX_INTERACTION_DISTANCE = 60
 const IMAGE_SRC = '/profile.png'
 
-function getPortraitSize(width) {
+function getPortraitSize(width, desktopSize, tabletSize, mobileSize) {
   if (width <= 480) {
-    return Math.min(220, width - 40)
+    return Math.min(mobileSize, width - 40)
   }
 
   if (width <= 768) {
-    return Math.min(280, width - 60)
+    return Math.min(tabletSize, width - 60)
   }
 
-  return 400
+  return desktopSize
 }
 
-export default function ParticlePortrait() {
+export default function ParticlePortrait({
+  desktopSize = 340,
+  tabletSize = 280,
+  mobileSize = 220,
+}) {
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
   const mouseRef = useRef({ x: -1000, y: -1000, active: false })
@@ -30,19 +34,21 @@ export default function ParticlePortrait() {
   const pageVisibleRef = useRef(true)
   const idleFramesRef = useRef(0)
   const [size, setSize] = useState(() =>
-    typeof window === 'undefined' ? 400 : getPortraitSize(window.innerWidth)
+    typeof window === 'undefined'
+      ? desktopSize
+      : getPortraitSize(window.innerWidth, desktopSize, tabletSize, mobileSize)
   )
 
   useEffect(() => {
     const updateSize = () => {
-      const nextSize = getPortraitSize(window.innerWidth)
+      const nextSize = getPortraitSize(window.innerWidth, desktopSize, tabletSize, mobileSize)
       setSize(currentSize => (currentSize === nextSize ? currentSize : nextSize))
     }
 
     updateSize()
     window.addEventListener('resize', updateSize)
     return () => window.removeEventListener('resize', updateSize)
-  }, [])
+  }, [desktopSize, tabletSize, mobileSize])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -329,7 +335,7 @@ export default function ParticlePortrait() {
       style={{
         width: `${size}px`,
         height: `${size}px`,
-        cursor: 'crosshair',
+        cursor: 'default',
       }}
     />
   )

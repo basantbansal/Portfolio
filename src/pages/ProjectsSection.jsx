@@ -178,10 +178,12 @@ export default function ProjectsSection() {
   }
 
   return (
-    <Section ref={sectionRef} id="projects">
-      <Text variant="sectionLabel" style={{ marginBottom: 20 }}>
-        02 / Projects
-      </Text>
+    <Section ref={sectionRef}>
+      <div id="projects" style={{ scrollMarginTop: 112 }}>
+        <Text variant="sectionLabel" style={{ marginBottom: 20 }}>
+          02 / Projects
+        </Text>
+      </div>
 
       <div
         ref={introRef}

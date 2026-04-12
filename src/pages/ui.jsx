@@ -87,7 +87,6 @@ export const Section = forwardRef(function Section({ children, style = {}, ...re
           background: `linear-gradient(180deg, ${T.bgSection} 0%, ${T.bgDeep} 100%)`,
           padding: '120px 5vw',
           borderTop: `1px solid ${T.border}`,
-          scrollMarginTop: 24,
         },
         style
       )}

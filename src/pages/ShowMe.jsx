@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState, lazy, Suspense } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, lazy, Suspense } from 'react'
 import gsap from 'gsap'
-import ParticlePortrait from '../components/ParticlePortrait'
 import { FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa'
 
 import { T } from './Theme'
@@ -18,6 +17,19 @@ import backgroundImage from '../assets/izuku-midoriya-10667x6000-19490.jpg'
 const HERO_TEXT = 'BASANT'
 const TAGLINE = 'ML \u00b7 Deep Learning \u00b7 Agentic AI'
 const DESC = 'Building things. Breaking limits. Learning in public.'
+const NAV_ITEMS = [
+  { label: 'Home', href: '#home' },
+  { label: 'About', href: '#about' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Timeline', href: '#timeline' },
+  { label: 'Contact', href: '#contact' },
+]
+const SOCIAL_LINKS = [
+  { label: 'GitHub', href: 'https://github.com/basantbansal', Icon: FaGithub },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/basant-bansal-22066036b/', Icon: FaLinkedin },
+  { label: 'Instagram', href: 'https://www.instagram.com/basant__bansal/', Icon: FaInstagram },
+]
 
 function MagneticButton({ children, href = '#' }) {
   const ref = useRef(null)
@@ -47,6 +59,184 @@ function MagneticButton({ children, href = '#' }) {
     >
       <Button variant="light">{children}</Button>
     </a>
+  )
+}
+
+function PortfolioNav({ isMobile, headerRef, onHomeClick }) {
+  return (
+    <header
+      ref={headerRef}
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 80,
+        backdropFilter: 'blur(18px)',
+        background: 'linear-gradient(180deg, rgba(29,18,16,0.96) 0%, rgba(20,12,11,0.92) 100%)',
+        borderBottom: `1px solid ${T.border}`,
+        boxShadow: '0 12px 34px rgba(0,0,0,0.14)',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1280,
+          margin: '0 auto',
+          padding: isMobile ? '14px 18px' : '16px 28px',
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'stretch' : 'center',
+          justifyContent: 'space-between',
+          gap: isMobile ? 14 : 24,
+        }}
+      >
+        <a
+          href="#home"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 12,
+            textDecoration: 'none',
+            alignSelf: isMobile ? 'flex-start' : 'center',
+          }}
+        >
+          <span
+            aria-hidden
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: 12,
+              display: 'grid',
+              placeItems: 'center',
+              background: `linear-gradient(135deg, ${T.accentAmber} 0%, ${T.accent} 100%)`,
+              color: T.bgDeep,
+              fontFamily: T.display,
+              fontSize: 24,
+              letterSpacing: '0.06em',
+              boxShadow: `0 0 20px ${T.accentGlow}`,
+            }}
+          >
+            B
+          </span>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Text as="span" variant="mono" style={{ color: T.accentAmber, fontSize: '10.5px', letterSpacing: '0.18em' }}>
+              Portfolio
+            </Text>
+            <Text as="span" variant="body" style={{ color: T.textPrimary, fontSize: isMobile ? '15px' : '16px', lineHeight: 1 }}>
+              Basant Bansal
+            </Text>
+          </div>
+        </a>
+
+        <div
+          style={{
+            display: 'flex',
+            flex: isMobile ? 'unset' : 1,
+            flexDirection: isMobile ? 'column' : 'row',
+            alignItems: isMobile ? 'stretch' : 'center',
+            justifyContent: 'space-between',
+            gap: isMobile ? 12 : 18,
+          }}
+        >
+          <nav
+            aria-label="Primary"
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 10,
+              alignItems: 'center',
+              justifyContent: isMobile ? 'flex-start' : 'center',
+            }}
+          >
+            {NAV_ITEMS.map(item => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={
+                  item.href === '#home'
+                    ? e => {
+                        e.preventDefault()
+                        onHomeClick('smooth')
+                      }
+                    : undefined
+                }
+                style={{
+                  padding: isMobile ? '9px 12px' : '10px 14px',
+                  borderRadius: 999,
+                  border: `1px solid ${T.border}`,
+                  color: item.label === 'Contact' ? T.textPrimary : T.textSecondary,
+                  background: item.label === 'Contact' ? T.accentGlow : 'rgba(255,255,255,0.02)',
+                  fontFamily: T.mono,
+                  fontSize: isMobile ? '11px' : '11.5px',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  transition: 'transform 0.2s, border-color 0.2s, color 0.2s, background 0.2s',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                  e.currentTarget.style.borderColor = T.accent
+                  e.currentTarget.style.color = T.textPrimary
+                  e.currentTarget.style.background = T.accentGlow
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.borderColor = T.border
+                  e.currentTarget.style.color = item.label === 'Contact' ? T.textPrimary : T.textSecondary
+                  e.currentTarget.style.background = item.label === 'Contact' ? T.accentGlow : 'rgba(255,255,255,0.02)'
+                }}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              justifyContent: isMobile ? 'flex-start' : 'flex-end',
+            }}
+          >
+            {SOCIAL_LINKS.map(({ label, href, Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={label}
+                style={{
+                  width: 38,
+                  height: 38,
+                  display: 'grid',
+                  placeItems: 'center',
+                  borderRadius: 999,
+                  border: `1px solid ${T.border}`,
+                  color: T.textSecondary,
+                  background: 'rgba(255,255,255,0.02)',
+                  textDecoration: 'none',
+                  transition: 'transform 0.2s, border-color 0.2s, color 0.2s, background 0.2s',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                  e.currentTarget.style.borderColor = T.accent
+                  e.currentTarget.style.color = T.textPrimary
+                  e.currentTarget.style.background = T.accentGlow
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.borderColor = T.border
+                  e.currentTarget.style.color = T.textSecondary
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.02)'
+                }}
+              >
+                <Icon size={15} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </header>
   )
 }
 
@@ -130,7 +320,7 @@ function HeroSection({ isMobile }) {
   }, [isMobile])
 
   return (
-    <section style={{ position: 'relative', width: '100%', height: isMobile ? '100svh' : '100vh', overflow: 'hidden', contain: 'layout style paint' }}>
+    <section id="home" style={{ position: 'relative', width: '100%', height: isMobile ? '100svh' : '100vh', overflow: 'hidden', contain: 'layout style paint' }}>
       <div ref={bgRef} style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
         <div style={{ position: 'absolute', top: '-5%', left: '-5%', width: '110%', height: '110%' }}>
           <img
@@ -341,151 +531,15 @@ function HeroSection({ isMobile }) {
   )
 }
 
-function PortraitSection({ isMobile }) {
-  return (
-    <div
-      style={{
-        position: 'relative',
-        zIndex: 30,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 28,
-        marginTop: isMobile ? -28 : -42,
-        padding: isMobile ? '72px 24px 88px' : '88px 24px',
-        background: `linear-gradient(180deg, rgba(29,18,16,0.98) 0%, ${T.bgSection} 42%, ${T.bgDeep} 100%)`,
-        borderTop: `1px solid ${T.borderHov}`,
-        borderTopLeftRadius: isMobile ? 28 : 42,
-        borderTopRightRadius: isMobile ? 28 : 42,
-        borderBottom: `1px solid ${T.border}`,
-        boxShadow: '0 -24px 54px rgba(0,0,0,0.18)',
-      }}
-    >
-      <div style={{ position: 'relative' }}>
-        <div
-          style={{
-            position: 'absolute',
-            inset: -12,
-            borderRadius: 20,
-            background: T.accentGlow,
-            filter: 'blur(20px)',
-          }}
-        />
-
-        <div
-          style={{
-            position: 'relative',
-            borderRadius: 16,
-            padding: 14,
-            background: T.bgCard,
-            border: `1px solid ${T.border}`,
-            boxShadow: `0 0 50px ${T.accentGlow}`,
-            overflow: 'hidden',
-            animation: 'floatY 6s ease-in-out infinite',
-          }}
-        >
-          <div
-            style={{
-              position: 'relative',
-              borderRadius: 12,
-              overflow: 'hidden',
-            }}
-          >
-            <ParticlePortrait />
-
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                width: 32,
-                height: '100%',
-                pointerEvents: 'none',
-                background: `linear-gradient(
-                  90deg,
-                  rgba(0,0,0,0) 0%,
-                  rgba(0,0,0,0.06) 35%,
-                  ${T.bgCard} 100%
-                )`,
-                filter: 'blur(6px)',
-              }}
-            />
-
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                pointerEvents: 'none',
-                borderRadius: 12,
-                boxShadow: 'inset 0 0 12px rgba(255,255,255,0.02)',
-              }}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div style={{ textAlign: 'center' }}>
-        <Text variant="subtitle" style={{ marginBottom: 6, color: T.accent }}>
-          Basant Bansal
-        </Text>
-        <Text
-          variant="body"
-          style={{
-            fontSize: '15px',
-            lineHeight: 1.65,
-            maxWidth: 260,
-            margin: '0 auto',
-          }}
-        >
-          ML/DL | Fullstack | IIIT Pune
-        </Text>
-      </div>
-
-      <div style={{ display: 'flex', gap: 24 }}>
-        {[
-          { href: 'https://github.com/basantbansal', Icon: FaGithub, hover: T.textPrimary, label: 'GitHub profile' },
-          { href: 'https://www.linkedin.com/in/basant-bansal-22066036b/', Icon: FaLinkedin, hover: '#60a5fa', label: 'LinkedIn profile' },
-          { href: 'https://www.instagram.com/basant__bansal/', Icon: FaInstagram, hover: T.accentRose, label: 'Instagram profile' },
-        ].map(({ href, Icon, hover, label }) => (
-          <a
-            aria-label={label}
-            key={href}
-            href={href}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              color: T.textMuted,
-              fontSize: 20,
-              transition: 'color 0.2s, transform 0.2s',
-              display: 'block',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.color = hover
-              e.currentTarget.style.transform = 'scale(1.18)'
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.color = T.textMuted
-              e.currentTarget.style.transform = 'scale(1)'
-            }}
-          >
-            <Icon />
-          </a>
-        ))}
-      </div>
-
-      <style>{`
-        @keyframes floatY {
-          0%,100% { transform: translateY(0); }
-          50%     { transform: translateY(-9px); }
-        }
-      `}</style>
-    </div>
-  )
-}
-
 export default function ShowMe() {
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
+  const headerRef = useRef(null)
+
+  const scrollToHomeFrame = behavior => {
+    const headerHeight = headerRef.current?.offsetHeight ?? 0
+    const targetTop = Math.max(headerHeight, 0)
+    window.scrollTo({ top: targetTop, behavior })
+  }
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768)
@@ -494,10 +548,20 @@ export default function ShowMe() {
     return () => window.removeEventListener('resize', check)
   }, [])
 
+  useLayoutEffect(() => {
+    if (window.location.hash || window.scrollY > 4) return
+
+    const rafId = window.requestAnimationFrame(() => {
+      scrollToHomeFrame('auto')
+    })
+
+    return () => window.cancelAnimationFrame(rafId)
+  }, [])
+
   return (
     <div style={{ background: T.bgDeep }}>
+      <PortfolioNav isMobile={isMobile} headerRef={headerRef} onHomeClick={scrollToHomeFrame} />
       <HeroSection isMobile={isMobile} />
-      <PortraitSection isMobile={isMobile} />
       <Suspense fallback={<div style={{ minHeight: 200 }} />}>
         <AboutSection />
         <ProjectsSection />

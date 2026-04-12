@@ -172,10 +172,12 @@ function TimelineItem({ event, index, isLast }) {
 
 export default function TimelineSection() {
   return (
-    <Section id="timeline">
-      <Text variant="sectionLabel" style={{ marginBottom: 20 }}>
-        04 / Timeline
-      </Text>
+    <Section>
+      <div id="timeline" style={{ scrollMarginTop: 112 }}>
+        <Text variant="sectionLabel" style={{ marginBottom: 20 }}>
+          04 / Timeline
+        </Text>
+      </div>
 
       <Text as="h2" variant="title" style={{ marginBottom: 60 }}>
         The Journey

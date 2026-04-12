@@ -49,10 +49,12 @@ export default function ContactSection() {
   }
 
   return (
-    <Section ref={secRef} id="contact" style={{ padding: '120px 5vw 80px' }}>
-      <Text variant="sectionLabel" style={{ marginBottom: 20 }}>
-        05 / Contact
-      </Text>
+    <Section ref={secRef} style={{ padding: '120px 5vw 80px' }}>
+      <div id="contact" style={{ scrollMarginTop: 112 }}>
+        <Text variant="sectionLabel" style={{ marginBottom: 20 }}>
+          05 / Contact
+        </Text>
+      </div>
       <div
         ref={textRef}
         style={{
