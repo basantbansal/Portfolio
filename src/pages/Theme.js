@@ -29,7 +29,7 @@ export const T = {
   fsSubtitle: 'clamp(1.15rem, 3vw, 1.7rem)',
   fsBody: '20.5px',
   fsSmall: '18px',
-  fsTiny: '15px',
+  fsTiny: '16.5px',
 
   lhHero: 0.9,
   lhTitle: 1,

@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import { T } from './Theme'
 
 export function cx(...styles) {
@@ -34,15 +35,15 @@ export function Text({
     sectionLabel: {
       fontFamily: T.mono,
       fontSize: T.fsTiny,
-      letterSpacing: '0.4em',
+      letterSpacing: '0.36em',
       textTransform: 'uppercase',
       color: T.accentRose,
       margin: 0,
     },
     subtitle: {
       fontFamily: T.mono,
-      fontSize: '11px',
-      letterSpacing: '0.28em',
+      fontSize: '12.5px',
+      letterSpacing: '0.24em',
       textTransform: 'uppercase',
       color: T.accentAmber,
       margin: 0,
@@ -61,8 +62,8 @@ export function Text({
     },
     mono: {
       fontFamily: T.mono,
-      fontSize: '10px',
-      letterSpacing: '0.2em',
+      fontSize: '11.5px',
+      letterSpacing: '0.16em',
       textTransform: 'uppercase',
       color: T.textMuted,
       margin: 0,
@@ -76,14 +77,17 @@ export function Text({
   )
 }
 
-export function Section({ children, style = {}, ...rest }) {
+export const Section = forwardRef(function Section({ children, style = {}, ...rest }, ref) {
   return (
     <section
+      ref={ref}
       style={cx(
         {
+          position: 'relative',
           background: `linear-gradient(180deg, ${T.bgSection} 0%, ${T.bgDeep} 100%)`,
           padding: '120px 5vw',
           borderTop: `1px solid ${T.border}`,
+          scrollMarginTop: 24,
         },
         style
       )}
@@ -92,9 +96,9 @@ export function Section({ children, style = {}, ...rest }) {
       {children}
     </section>
   )
-}
+})
 
-export function Card({ children, hover = false, style = {}, ...rest }) {
+export const Card = forwardRef(function Card({ children, hover = false, style = {}, ...rest }, ref) {
   const base = {
     background: `linear-gradient(180deg, ${T.bgCard} 0%, ${T.bgSection} 100%)`,
     border: `1px solid ${T.border}`,
@@ -105,6 +109,7 @@ export function Card({ children, hover = false, style = {}, ...rest }) {
 
   return (
     <div
+      ref={ref}
       style={cx(base, style)}
       onMouseEnter={
         hover
@@ -112,7 +117,7 @@ export function Card({ children, hover = false, style = {}, ...rest }) {
               e.currentTarget.style.transform = 'translateY(-2px)'
               e.currentTarget.style.background = T.bgCardHov
               e.currentTarget.style.borderColor = T.borderHov
-              e.currentTarget.style.boxShadow = `0 12px 34px rgba(0,0,0,0.22)`
+              e.currentTarget.style.boxShadow = '0 12px 34px rgba(0,0,0,0.22)'
             }
           : undefined
       }
@@ -131,18 +136,18 @@ export function Card({ children, hover = false, style = {}, ...rest }) {
       {children}
     </div>
   )
-}
+})
 
 export function Tag({ children, style = {}, ...rest }) {
   return (
     <span
       style={cx(
         {
-          padding: '7px 14px',
+          padding: '8px 15px',
           border: `1px solid ${T.border}`,
           color: T.textSecondary,
           fontFamily: T.mono,
-          fontSize: '10.5px',
+          fontSize: '11.5px',
           letterSpacing: '0.08em',
           borderRadius: 999,
           background: 'rgba(255,255,255,0.02)',
@@ -182,13 +187,13 @@ export function Button({
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
-    padding: '12px 22px',
+    gap: 10,
+    padding: '13px 24px',
     border: '1px solid transparent',
     fontFamily: T.mono,
-    fontSize: '11px',
+    fontSize: '12px',
     fontWeight: 700,
-    letterSpacing: '0.18em',
+    letterSpacing: '0.16em',
     textTransform: 'uppercase',
     textDecoration: 'none',
     cursor: 'pointer',

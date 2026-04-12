@@ -4,8 +4,8 @@ import { Section, Text, Card, Tag } from './ui'
 
 const STATS = [
   { value: '2024', label: 'Started College' },
-  { value: 'ECE',  label: 'IIIT Pune' },
-  { value: '3',    label: 'Projects Shipped' },
+  { value: 'ECE', label: 'IIIT Pune' },
+  { value: '3', label: 'Projects Shipped' },
 ]
 
 export default function AboutSection() {
@@ -15,9 +15,9 @@ export default function AboutSection() {
   const secRef = useRef(null)
 
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return
-      obs.disconnect()
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      observer.disconnect()
       setTimeout(() => {
         if (lineRef.current) lineRef.current.style.cssText += 'width:100%;opacity:1'
         if (leftRef.current) leftRef.current.style.cssText += 'opacity:1;transform:translateX(0)'
@@ -25,12 +25,12 @@ export default function AboutSection() {
       }, 120)
     }, { threshold: 0.2 })
 
-    if (secRef.current) obs.observe(secRef.current)
-    return () => obs.disconnect()
+    if (secRef.current) observer.observe(secRef.current)
+    return () => observer.disconnect()
   }, [])
 
   return (
-    <Section ref={secRef}>
+    <Section ref={secRef} id="about">
       <Text variant="sectionLabel" style={{ marginBottom: 20 }}>
         01 / About
       </Text>
@@ -74,13 +74,12 @@ export default function AboutSection() {
             "Build things.<br />Break limits.<br />Learn in public."
           </blockquote>
 
-          <Text variant="body" style={{ maxWidth: 520 }}>
-            I'm Basant, an Electronics & Communication Engineering student at IIIT Pune (2024–2028).
-            I focus on Machine Learning, Deep Learning, Computer Vision, and LLMs —
-            currently building agentic AI systems with tool use and memory.
+          <Text variant="body" style={{ maxWidth: 520, fontSize: '16.5px', lineHeight: 1.85 }}>
+            I'm Basant, an Electronics & Communication Engineering student at IIIT Pune (2024-2028).
+            I focus on Machine Learning, Deep Learning, Computer Vision, and LLMs - currently building agentic AI systems with tool use and memory.
           </Text>
 
-          <Text variant="muted" style={{ color: T.accentRose, marginTop: 18 }}>
+          <Text variant="muted" style={{ fontSize: '16px', color: T.accentRose, marginTop: 18 }}>
             Currently obsessed with multi-agent architectures and LangGraph.
           </Text>
         </div>

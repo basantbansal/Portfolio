@@ -16,7 +16,7 @@ import subjectImage from '../assets/izuku-midoriya-10667x6000-19490-Photoroom.pn
 import backgroundImage from '../assets/izuku-midoriya-10667x6000-19490.jpg'
 
 const HERO_TEXT = 'BASANT'
-const TAGLINE = 'ML · Deep Learning · Agentic AI'
+const TAGLINE = 'ML \u00b7 Deep Learning \u00b7 Agentic AI'
 const DESC = 'Building things. Breaking limits. Learning in public.'
 
 function MagneticButton({ children, href = '#' }) {
@@ -27,10 +27,10 @@ function MagneticButton({ children, href = '#' }) {
       ref={ref}
       href={href}
       onMouseMove={e => {
-        const r = ref.current.getBoundingClientRect()
+        const rect = ref.current.getBoundingClientRect()
         gsap.to(ref.current, {
-          x: (e.clientX - r.left - r.width / 2) * 0.35,
-          y: (e.clientY - r.top - r.height / 2) * 0.35,
+          x: (e.clientX - rect.left - rect.width / 2) * 0.35,
+          y: (e.clientY - rect.top - rect.height / 2) * 0.35,
           duration: 0.3,
           ease: 'power2.out',
         })
@@ -56,17 +56,18 @@ function HeroSection({ isMobile }) {
   const subjectRef = useRef(null)
   const outlineRef = useRef(null)
   const bioRef = useRef(null)
+  const heroWordSize = isMobile ? 'clamp(5.4rem, 24vw, 8rem)' : 'clamp(8rem, 17vw, 13.75rem)'
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) {
-      ;[bgRef, solidRef, subjectRef, outlineRef, bioRef].forEach(r => {
-        if (r.current) r.current.style.opacity = '1'
+      ;[bgRef, solidRef, subjectRef, outlineRef, bioRef].forEach(ref => {
+        if (ref.current) ref.current.style.opacity = '1'
       })
       return
     }
 
-    const t = setTimeout(() => {
+    const timer = setTimeout(() => {
       gsap.timeline({ defaults: { ease: 'power3.out' } })
         .fromTo(bgRef.current, { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.15 })
         .fromTo(solidRef.current, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, '-=0.5')
@@ -75,7 +76,7 @@ function HeroSection({ isMobile }) {
         .fromTo(bioRef.current, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, '-=0.35')
     }, 100)
 
-    return () => clearTimeout(t)
+    return () => clearTimeout(timer)
   }, [])
 
   useEffect(() => {
@@ -83,24 +84,41 @@ function HeroSection({ isMobile }) {
     if (reduced || isMobile) return
 
     let moved = false
-    const MAX = 40
+    const maxOffset = 40
+    const bgX = gsap.quickTo(bgRef.current, 'x', { duration: 0.4, ease: 'power2.out' })
+    const bgY = gsap.quickTo(bgRef.current, 'y', { duration: 0.4, ease: 'power2.out' })
+    const solidX = gsap.quickTo(solidRef.current, 'x', { duration: 0.4, ease: 'power2.out' })
+    const solidY = gsap.quickTo(solidRef.current, 'y', { duration: 0.4, ease: 'power2.out' })
+    const subjectX = gsap.quickTo(subjectRef.current, 'x', { duration: 0.4, ease: 'power2.out' })
+    const subjectY = gsap.quickTo(subjectRef.current, 'y', { duration: 0.4, ease: 'power2.out' })
+    const outlineX = gsap.quickTo(outlineRef.current, 'x', { duration: 0.4, ease: 'power2.out' })
+    const outlineY = gsap.quickTo(outlineRef.current, 'y', { duration: 0.4, ease: 'power2.out' })
 
     const onMove = e => {
       moved = true
       const nx = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2)
       const ny = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2)
 
-      gsap.to(bgRef.current, { x: -nx * 0.2 * MAX, y: -ny * 0.2 * MAX, duration: 0.4, ease: 'power2.out' })
-      gsap.to(solidRef.current, { x: nx * 0.07 * MAX, y: ny * 0.07 * MAX, duration: 0.4, ease: 'power2.out' })
-      gsap.to(subjectRef.current, { x: nx * 0.1 * MAX, y: ny * 0.1 * MAX, duration: 0.4, ease: 'power2.out' })
-      gsap.to(outlineRef.current, { x: nx * 0.14 * MAX, y: ny * 0.14 * MAX, duration: 0.4, ease: 'power2.out' })
+      bgX(-nx * 0.2 * maxOffset)
+      bgY(-ny * 0.2 * maxOffset)
+      solidX(nx * 0.07 * maxOffset)
+      solidY(ny * 0.07 * maxOffset)
+      subjectX(nx * 0.1 * maxOffset)
+      subjectY(ny * 0.1 * maxOffset)
+      outlineX(nx * 0.14 * maxOffset)
+      outlineY(ny * 0.14 * maxOffset)
     }
 
     const onLeave = () => {
       if (!moved) return
-      ;[bgRef, solidRef, subjectRef, outlineRef].forEach(r =>
-        gsap.to(r.current, { x: 0, y: 0, duration: 0.4, ease: 'power2.out' })
-      )
+      bgX(0)
+      bgY(0)
+      solidX(0)
+      solidY(0)
+      subjectX(0)
+      subjectY(0)
+      outlineX(0)
+      outlineY(0)
     }
 
     window.addEventListener('mousemove', onMove)
@@ -112,7 +130,7 @@ function HeroSection({ isMobile }) {
   }, [isMobile])
 
   return (
-    <section style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', contain: 'layout style paint' }}>
+    <section style={{ position: 'relative', width: '100%', height: isMobile ? '100svh' : '100vh', overflow: 'hidden', contain: 'layout style paint' }}>
       <div ref={bgRef} style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
         <div style={{ position: 'absolute', top: '-5%', left: '-5%', width: '110%', height: '110%' }}>
           <img
@@ -151,7 +169,7 @@ function HeroSection({ isMobile }) {
           style={{
             position: 'absolute',
             inset: 0,
-            backgroundImage: `radial-gradient(circle at 20% 20%, rgba(255,215,106,0.12), transparent 30%), radial-gradient(circle at 80% 30%, rgba(245,154,176,0.10), transparent 26%), radial-gradient(circle at 50% 80%, rgba(255,158,74,0.12), transparent 34%)`,
+            backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(255,215,106,0.12), transparent 30%), radial-gradient(circle at 80% 30%, rgba(245,154,176,0.10), transparent 26%), radial-gradient(circle at 50% 80%, rgba(255,158,74,0.12), transparent 34%)',
             pointerEvents: 'none',
           }}
         />
@@ -173,7 +191,7 @@ function HeroSection({ isMobile }) {
           <Text
             variant="hero"
             style={{
-              fontSize: '220px',
+              fontSize: heroWordSize,
               color: '#ffffff',
               textShadow: '0 0 18px rgba(255,255,255,0.08)',
             }}
@@ -209,20 +227,20 @@ function HeroSection({ isMobile }) {
             justifyContent: 'center',
           }}
         >
-            <img
-              src={subjectImage}
-              alt={HERO_TEXT}
-              fetchPriority="high"
-              decoding="async"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-                objectPosition: 'center bottom',
-                transform: isMobile ? 'scale(1.5) translateY(10px)' : 'scale(1.9) translateY(-90px)',
-                filter: 'drop-shadow(0 14px 40px rgba(0,0,0,0.22))',
-              }}
-            />
+          <img
+            src={subjectImage}
+            alt={HERO_TEXT}
+            fetchPriority="high"
+            decoding="async"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition: 'center bottom',
+              transform: isMobile ? 'scale(1.5) translateY(10px)' : 'scale(1.9) translateY(-90px)',
+              filter: 'drop-shadow(0 14px 40px rgba(0,0,0,0.22))',
+            }}
+          />
         </div>
       </div>
 
@@ -231,7 +249,7 @@ function HeroSection({ isMobile }) {
           ref={outlineRef}
           style={{
             fontFamily: T.display,
-            fontSize: '220px',
+            fontSize: heroWordSize,
             color: 'transparent',
             WebkitTextStroke: isMobile ? '2px rgba(255,255,255,0.35)' : '4px rgba(255,255,255,0.35)',
             fontWeight: 900,
@@ -247,25 +265,64 @@ function HeroSection({ isMobile }) {
         </div>
       </div>
 
-      <div ref={bioRef} style={{ position: 'absolute', bottom: isMobile ? 26 : 48, left: isMobile ? 20 : 52, zIndex: 20, maxWidth: 360 }}>
+      <div ref={bioRef} style={{ position: 'absolute', bottom: isMobile ? 78 : 88, left: isMobile ? 20 : 52, zIndex: 20, maxWidth: 390 }}>
         <Text variant="subtitle" style={{ marginBottom: 10, color: T.accentAmber }}>
           {TAGLINE}
         </Text>
-        <Text variant="body" style={{ fontSize: '16px', lineHeight: 1.7, color: T.textPrimary, marginBottom: 24 }}>
+        <Text variant="body" style={{ fontSize: '17px', lineHeight: 1.72, color: T.textPrimary, marginBottom: 24 }}>
           {DESC}
         </Text>
         <MagneticButton href="#projects">See My Work</MagneticButton>
       </div>
 
-      <div style={{ position: 'absolute', bottom: isMobile ? 26 : 48, right: isMobile ? 20 : 52, zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-        <span style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: '0.32em', color: 'rgba(255,244,223,0.55)', textTransform: 'uppercase', writingMode: 'vertical-rl' }}>
-          Scroll
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          bottom: isMobile ? 26 : 30,
+          transform: 'translateX(-50%)',
+          zIndex: 22,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          padding: isMobile ? '10px 14px' : '11px 16px',
+          borderRadius: 999,
+          border: `1px solid ${T.borderHov}`,
+          background: 'rgba(20,12,11,0.58)',
+          backdropFilter: 'blur(12px)',
+          boxShadow: '0 14px 34px rgba(0,0,0,0.18)',
+          animation: 'hintFloat 2.8s ease-in-out infinite',
+        }}
+      >
+        <span style={{ fontFamily: T.mono, fontSize: isMobile ? 11 : 12, letterSpacing: '0.18em', color: T.textPrimary, textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+          Scroll to explore
         </span>
-        <div style={{ width: 2, height: 40, background: `linear-gradient(180deg, ${T.accentAmber} 0%, transparent 100%)`, animation: 'scrollPulse 2.2s ease-in-out infinite' }} />
+
+        <div style={{ position: 'relative', width: 22, height: 10 }}>
+          <div style={{ position: 'absolute', inset: '4px 0 auto 0', height: 2, borderRadius: 999, background: `linear-gradient(90deg, ${T.accentAmber} 0%, ${T.accent} 100%)` }} />
+          <div style={{ position: 'absolute', right: 1, top: 0, width: 7, height: 7, borderRight: `2px solid ${T.accentAmber}`, borderBottom: `2px solid ${T.accentAmber}`, transform: 'rotate(-45deg)' }} />
+        </div>
       </div>
 
-      <style>{`
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          left: '50%',
+          bottom: 0,
+          transform: 'translateX(-50%)',
+          width: isMobile ? 180 : 280,
+          height: isMobile ? 48 : 68,
+          zIndex: 21,
+          background: `linear-gradient(180deg, rgba(29,18,16,0.08) 0%, ${T.bgDeep} 88%)`,
+          borderTop: `1px solid ${T.borderHov}`,
+          borderTopLeftRadius: 180,
+          borderTopRightRadius: 180,
+          boxShadow: '0 -18px 34px rgba(0,0,0,0.18)',
+        }}
+      />
 
+      <style>{`
         @keyframes grainShift {
           0%   { transform: translate(0,0); }
           20%  { transform: translate(-3%,-3%); }
@@ -275,27 +332,34 @@ function HeroSection({ isMobile }) {
           100% { transform: translate(0,0); }
         }
 
-        @keyframes scrollPulse {
-          0%,100% { opacity: 0.35; transform: scaleY(1); }
-          50%     { opacity: 0.95; transform: scaleY(1.15); }
+        @keyframes hintFloat {
+          0%, 100% { transform: translateX(-50%) translateY(0); }
+          50%      { transform: translateX(-50%) translateY(-5px); }
         }
       `}</style>
     </section>
   )
 }
 
-function PortraitSection() {
+function PortraitSection({ isMobile }) {
   return (
     <div
       style={{
+        position: 'relative',
+        zIndex: 30,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         gap: 28,
-        padding: '88px 24px',
-        background: `linear-gradient(180deg, ${T.bgDeep} 0%, ${T.bgSection} 100%)`,
+        marginTop: isMobile ? -28 : -42,
+        padding: isMobile ? '72px 24px 88px' : '88px 24px',
+        background: `linear-gradient(180deg, rgba(29,18,16,0.98) 0%, ${T.bgSection} 42%, ${T.bgDeep} 100%)`,
+        borderTop: `1px solid ${T.borderHov}`,
+        borderTopLeftRadius: isMobile ? 28 : 42,
+        borderTopRightRadius: isMobile ? 28 : 42,
         borderBottom: `1px solid ${T.border}`,
+        boxShadow: '0 -24px 54px rgba(0,0,0,0.18)',
       }}
     >
       <div style={{ position: 'relative' }}>
@@ -321,7 +385,6 @@ function PortraitSection() {
             animation: 'floatY 6s ease-in-out infinite',
           }}
         >
-          {/* portrait */}
           <div
             style={{
               position: 'relative',
@@ -331,7 +394,6 @@ function PortraitSection() {
           >
             <ParticlePortrait />
 
-            {/* soft right-edge smoother */}
             <div
               style={{
                 position: 'absolute',
@@ -350,7 +412,6 @@ function PortraitSection() {
               }}
             />
 
-            {/* tiny global softening layer */}
             <div
               style={{
                 position: 'absolute',
@@ -371,24 +432,24 @@ function PortraitSection() {
         <Text
           variant="body"
           style={{
-            fontSize: '13.5px',
+            fontSize: '15px',
             lineHeight: 1.65,
             maxWidth: 260,
             margin: '0 auto',
           }}
         >
-          ML · Deep Learning · IIIT Pune
+          ML/DL | Fullstack | IIIT Pune
         </Text>
       </div>
 
       <div style={{ display: 'flex', gap: 24 }}>
         {[
-          { href: 'https://github.com/basantbansal' , Icon: FaGithub, hover: T.textPrimary },
-          { href: 'https://www.linkedin.com/in/basant-bansal-22066036b/', Icon: FaLinkedin, hover: '#60a5fa' },
-          { href: 'https://www.instagram.com/basant__bansal/', Icon: FaInstagram, hover: T.accentRose },
-        ].map(({ href, Icon, hover }) => (
+          { href: 'https://github.com/basantbansal', Icon: FaGithub, hover: T.textPrimary, label: 'GitHub profile' },
+          { href: 'https://www.linkedin.com/in/basant-bansal-22066036b/', Icon: FaLinkedin, hover: '#60a5fa', label: 'LinkedIn profile' },
+          { href: 'https://www.instagram.com/basant__bansal/', Icon: FaInstagram, hover: T.accentRose, label: 'Instagram profile' },
+        ].map(({ href, Icon, hover, label }) => (
           <a
-            aria-label="My Profile"
+            aria-label={label}
             key={href}
             href={href}
             target="_blank"
@@ -435,14 +496,14 @@ export default function ShowMe() {
 
   return (
     <div style={{ background: T.bgDeep }}>
-      <Suspense fallback={<div style={{ minHeight: 200 }} />}>
       <HeroSection isMobile={isMobile} />
-      <PortraitSection />
-      <AboutSection />
-      <ProjectsSection />
-      <SkillsSection />
-      <TimelineSection />
-      <ContactSection />
+      <PortraitSection isMobile={isMobile} />
+      <Suspense fallback={<div style={{ minHeight: 200 }} />}>
+        <AboutSection />
+        <ProjectsSection />
+        <SkillsSection />
+        <TimelineSection />
+        <ContactSection />
       </Suspense>
     </div>
   )

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa'
-import { Section, Text, Button } from './ui'
+import { Section, Text } from './ui'
 import { T } from './Theme'
 
 const SOCIALS = [
@@ -17,9 +17,9 @@ export default function ContactSection() {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return
-      obs.disconnect()
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      observer.disconnect()
       setTimeout(() => {
         if (textRef.current) {
           textRef.current.style.opacity = '1'
@@ -28,23 +28,31 @@ export default function ContactSection() {
       }, 100)
     }, { threshold: 0.2 })
 
-    if (secRef.current) obs.observe(secRef.current)
-    return () => obs.disconnect()
+    if (secRef.current) observer.observe(secRef.current)
+    return () => observer.disconnect()
   }, [])
 
-  const copyEmail = () => {
-    navigator.clipboard.writeText(EMAIL).then(() => {
+  const copyEmail = async () => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(EMAIL)
+      } else {
+        window.location.href = `mailto:${EMAIL}`
+        return
+      }
+
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-    })
+    } catch {
+      window.location.href = `mailto:${EMAIL}`
+    }
   }
 
   return (
-    <Section ref={secRef} style={{ padding: '120px 5vw 80px' }}>
+    <Section ref={secRef} id="contact" style={{ padding: '120px 5vw 80px' }}>
       <Text variant="sectionLabel" style={{ marginBottom: 20 }}>
         05 / Contact
       </Text>
-
       <div
         ref={textRef}
         style={{
@@ -57,12 +65,12 @@ export default function ContactSection() {
           Let's Build<br />Something.
         </Text>
 
-        <Text variant="body" style={{ maxWidth: 420, marginBottom: 52 }}>
-          Open to hackathon collabs, ML projects, internships,
-          or just talking about AI and deep learning.
+        <Text variant="body" style={{ maxWidth: 420, marginBottom: 52, fontSize: '16.5px', lineHeight: 1.8 }}>
+          Open to hackathon collabs, ML projects, internships, or just talking about AI and deep learning.
         </Text>
 
-        <div
+        <button
+          type="button"
           onClick={copyEmail}
           style={{
             display: 'inline-flex',
@@ -76,6 +84,8 @@ export default function ContactSection() {
             transition: 'border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s',
             borderRadius: 999,
             boxShadow: '0 8px 26px rgba(0,0,0,0.14)',
+            appearance: 'none',
+            textAlign: 'left',
           }}
           onMouseEnter={e => {
             e.currentTarget.style.borderColor = T.accent
@@ -88,24 +98,24 @@ export default function ContactSection() {
             e.currentTarget.style.transform = 'translateY(0)'
           }}
         >
-          <span style={{ fontFamily: T.mono, fontSize: 13, color: T.textSecondary, letterSpacing: '0.04em' }}>
+          <span style={{ fontFamily: T.mono, fontSize: 14, color: T.textSecondary, letterSpacing: '0.04em' }}>
             {EMAIL}
           </span>
 
           <span
             style={{
               fontFamily: T.mono,
-              fontSize: 9,
-              letterSpacing: '0.22em',
+              fontSize: 10.5,
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
               color: copied ? T.accentGreen : T.accentAmber,
               transition: 'color 0.2s',
               minWidth: 70,
             }}
           >
-            {copied ? '✓ Copied' : 'Copy Email'}
+            {copied ? 'Copied' : 'Copy Email'}
           </span>
-        </div>
+        </button>
 
         <div style={{ height: 1, background: `linear-gradient(90deg, ${T.border} 0%, transparent 100%)`, marginBottom: 36 }} />
 
@@ -124,8 +134,8 @@ export default function ContactSection() {
                   color: T.textMuted,
                   textDecoration: 'none',
                   fontFamily: T.mono,
-                  fontSize: 10.5,
-                  letterSpacing: '0.12em',
+                  fontSize: 12,
+                  letterSpacing: '0.1em',
                   transition: 'color 0.2s, transform 0.2s',
                 }}
                 onMouseEnter={e => {
@@ -137,14 +147,14 @@ export default function ContactSection() {
                   e.currentTarget.style.transform = 'translateY(0)'
                 }}
               >
-                <Icon size={13} />
+                <Icon size={14} />
                 {label}
               </a>
             ))}
           </div>
 
           <Text variant="mono" style={{ opacity: 0.75 }}>
-            Basant Bansal · IIIT Pune · 2024–2028
+            Basant Bansal / IIIT Pune / 2024-2028
           </Text>
         </div>
       </div>
