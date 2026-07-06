@@ -410,7 +410,7 @@ function HeroSection({ isMobile }) {
           ref={subjectRef}
           style={{
             width: '80%',
-            maxWidth: 900,
+            maxWidth: 1300,
             height: '100%',
             display: 'flex',
             alignItems: 'center',
@@ -427,7 +427,7 @@ function HeroSection({ isMobile }) {
               height: '100%',
               objectFit: 'contain',
               objectPosition: 'center bottom',
-              transform: isMobile ? 'scale(1.5) translateY(10px)' : 'scale(1.9) translateY(-90px)',
+              transform: isMobile ? 'scale(1.5) translateY(10px)' : 'scale(1.5) translateY(-90px)',
               filter: 'drop-shadow(0 14px 40px rgba(0,0,0,0.22))',
             }}
           />
